@@ -1,7 +1,7 @@
 {
   "name": "podio-api",
   "version": "0.0.1",
-  "description": "Module to invoke podio.com services",
+  "description": "Module to invoke podio's REST API services",
   "author": "Kidozen <support@kidozen.com>",
   "contributors": [ 
     {
