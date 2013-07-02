@@ -161,10 +161,10 @@ describe("podio", function () {
         });
     });
 
-    it ("methods from application.js has been hooked", function (done) {
+    it ("methods have been hooked", function (done) {
 
         var con = new Connector(settings);
-        assert.equal("function", typeof con["appActivate"]);
+        assert.equal("function", typeof con["applicationsActivateApp"]);
         done();
     });
 });

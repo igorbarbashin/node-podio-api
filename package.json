@@ -1,12 +1,16 @@
 {
   "name": "podio-api",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Module to invoke podio's REST API services",
   "author": "Kidozen <support@kidozen.com>",
   "contributors": [ 
     {
       "name": "Silvio Massari",
       "email": "silvio@kidozen.com"
+    }, 
+    {
+      "name": "Gustavo Machado",
+      "email": "gus@kidozen.com"
     } 
   ],
   "main": "index.js",

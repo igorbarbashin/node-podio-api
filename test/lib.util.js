@@ -151,7 +151,7 @@ describe("lib.util", function ( ) {
             }
         } );
 
-        it("Should throw if no methodsInfo argument", function ( done ) {
+        it("Should throw if no methods argument", function ( done ) {
 
             try {
                 var util = new Util({});
@@ -161,7 +161,7 @@ describe("lib.util", function ( ) {
             } catch ( e ) {
                 assert.ok(e);
                 assert.ok(e instanceof Error);
-                assert.ok(e.message.indexOf("'methodsInfo") > -1);
+                assert.ok(e.message.indexOf("'methods") > -1);
                 done();
             }
         });
@@ -169,10 +169,10 @@ describe("lib.util", function ( ) {
         it ("Should add all methods", function ( done ) {
 
             var target = {},
-                methods = {
+                methods = { group: {
                     foo: { path: "/" },
                     bar: { path: "/" }
-                };
+                } };
 
             var util = new Util({});
             util.hook(target, methods);
@@ -191,7 +191,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target  = {};
-            var methods = { foo: { path: "/" } };
+            var methods = { group: { foo: { path: "/" } } };
             var util    = new Util(settings)
             
             util.cacheAuth.set ("xyz", { 
@@ -220,7 +220,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target  = {};
-            var methods = { foo: { method: "POST", path: "/" } };
+            var methods = { group: { foo: { method: "POST", path: "/" } } };
             var util    = new Util(settings)
 
             util.cacheAuth.set ("xyz", { 
@@ -250,7 +250,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target  = {};
-            var methods = { foo: { path: "/alfa/beta" } };
+            var methods = { group: { foo: { path: "/alfa/beta" } } };
             var util    = new Util(settings)
 
             util.cacheAuth.set ("xyz", { 
@@ -274,7 +274,7 @@ describe("lib.util", function ( ) {
 
     describe("invoking methods", function ( ) {
 
-        var methods = { foo: { path: "/" } };
+        var methods = { group: { foo: { path: "/" } } };
 
         beforeEach (function (done) {
             settings.apiEndpoint = "http://api.contoso";
@@ -774,7 +774,7 @@ describe("lib.util", function ( ) {
         it ("Should fail on missing required argument", function ( done ) {
 
             var target = {};
-            var methods = { foo: { path: "/{requiredArg}" } };
+            var methods = { group: { foo: { path: "/{requiredArg}" } } };
             var util = new Util(settings);            
 
             util.cacheAuth.set ("xyz", { 
@@ -803,7 +803,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target = {};
-            var methods = { foo: { path: "/{requiredArg}" } };
+            var methods = { group: { foo: { path: "/{requiredArg}" } } };
             var util = new Util(settings);
 
             util.cacheAuth.set ("xyz", { 
@@ -832,7 +832,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target = {};
-            var methods = { foo: { path: "/" } };
+            var methods = { group: { foo: { path: "/" } } };
             var util = new Util(settings);
 
             util.cacheAuth.set ("xyz", { 
@@ -860,7 +860,7 @@ describe("lib.util", function ( ) {
                 .reply(200, true);
 
             var target = {};
-            var methods = { foo: { path: "/" } };
+            var methods = { group: { foo: { path: "/" } } };
             var util = new Util(settings);
 
             util.cacheAuth.set ("xyz", { 

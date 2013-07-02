@@ -68,7 +68,7 @@ var Podio = function(settings) {
     };
 
     // Adds public methods to the instance
-    util.hook(this, require("./lib/application")); // All methods for applications
+    util.hook(this, require("./lib/methods"));
 };
 
 // Exports Podio class 
