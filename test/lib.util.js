@@ -74,8 +74,9 @@ describe("lib.util", function ( ) {
 
                 util.authenticate(options, function(err, result) {
                     assert.ok(!err);
-                    assert.equal('string', typeof result);
-                    assert.equal(36, result.length);
+                    assert.ok(result);
+                    assert.equal('string', typeof result.auth);
+                    assert.equal(36, result.auth.length);
                     done();
                 });
             });
@@ -126,8 +127,8 @@ describe("lib.util", function ( ) {
                 util.authenticate(options, function(err, result){
                     assert.ok(!err);
                     assert.ok(result);
-                    assert.equal('string', typeof result);
-                    assert.equal(36, result.length);
+                    assert.equal('string', typeof result.auth);
+                    assert.equal(36, result.auth.length);
                     done();
                 });
             });
@@ -313,13 +314,14 @@ describe("lib.util", function ( ) {
         
                 util.hook(target, methods);         
 
-                util.authenticate({ username:"alfa", password:"beta" }, function (err, auth) {
+                util.authenticate({ username:"alfa", password:"beta" }, function (err, authRes) {
 
                     assert.ok(!err);
-                    assert.equal("string", typeof auth);
-                    assert.equal(36, auth.length);
+                    assert.ok(authRes);
+                    assert.equal("string", typeof authRes.auth);
+                    assert.equal(36, authRes.auth.length);
 
-                    target["foo"]({ auth: auth }, function(err, result){
+                    target["foo"]({ auth: authRes.auth }, function(err, result){
                         assert.ok(!err);
                         assert.ok(result);
                         assert.equal(200, result.statusCode);
@@ -331,7 +333,7 @@ describe("lib.util", function ( ) {
             });
 
             it ("should invoke if user credentials were passed" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=password&username=alfa&password=beta")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -339,7 +341,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -411,7 +413,7 @@ describe("lib.util", function ( ) {
             });
 
             it ("should invoke if app credentials were passed" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=app&app_id=alfa&app_token=beta")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -419,7 +421,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -503,7 +505,7 @@ describe("lib.util", function ( ) {
 
             it ("should use configured user credentials if not auth value was passed within option argument, ", function ( done ) {
 
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=password&username=alfa&password=beta")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -511,7 +513,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -530,7 +532,8 @@ describe("lib.util", function ( ) {
                 });
             });
 
-            it ("should cache configured user credentials" , function (done) {
+            it("should cache configured user credentials" , function (done) {
+
                 nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=password&username=alfa&password=beta")
                     .reply(200, { 
@@ -563,7 +566,6 @@ describe("lib.util", function ( ) {
 
                     // this invocation must use cache auth 
                     method({ }, function(err, result){
-
                         assert.ok(!err);
                         assert.ok(result);
                         assert.equal(200, result.statusCode);
@@ -575,7 +577,7 @@ describe("lib.util", function ( ) {
             });
 
             it ("should use passed user credentials instead the configured one" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=password&username=gama&password=omega")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -583,7 +585,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -603,7 +605,7 @@ describe("lib.util", function ( ) {
             });
 
             it("should use passed app credentials instead the configured user credentials" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=app&app_id=gama&app_token=omega")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -611,7 +613,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -643,7 +645,7 @@ describe("lib.util", function ( ) {
 
             it("should use configured app credentials if not auth value was passed within option argument, ", function ( done ) {
 
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=app&app_id=alfa&app_token=beta")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -651,7 +653,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -715,7 +717,7 @@ describe("lib.util", function ( ) {
             });
 
             it ("should use passed user credentials instead the configured app credentials" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=password&username=gama&password=omega")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -723,7 +725,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -743,7 +745,7 @@ describe("lib.util", function ( ) {
             });
 
             it("should use passed app credentials instead the configured one" , function (done) {
-                var podioAuth = nock("http://auth.contoso")
+                nock("http://auth.contoso")
                     .post("/oauth/token", "client_id=clientId&client_secret=clientSecret&grant_type=app&app_id=gama&app_token=omega")
                     .reply(200, { 
                         access_token    : "xyz",
@@ -751,7 +753,7 @@ describe("lib.util", function ( ) {
                         expires_in      : 10
                     });
 
-                var podioApi = nock("http://api.contoso")
+                nock("http://api.contoso")
                     .matchHeader('Authorization', 'OAuth2 xyz')
                     .get("/")
                     .reply(200, {foo:"bar"});
@@ -855,8 +857,8 @@ describe("lib.util", function ( ) {
 
         it ("Should send optional params as querystring", function ( done ) {
 
-            var server = nock("http://api.contoso?bar=1&baz=2")
-                .get("/")
+            var server = nock("http://api.contoso")
+                .get("/?bar=1&baz=2")
                 .reply(200, true);
 
             var target = {};
@@ -873,7 +875,7 @@ describe("lib.util", function ( ) {
 
             assert.ok(typeof target["foo"] === 'function');
 
-            target["foo"]({auth:'xyz', body: { bar: 1, baz: 2 } }, function(err, result){
+            target["foo"]({auth:'xyz', params: { bar: 1, baz: 2 } }, function(err, result){
                 assert.ok(!err);
                 assert.ok(result);
                 done();
