@@ -10,6 +10,14 @@ Use npm to install the module:
 > npm install podio-api
 ```
 
+## Runing tests
+
+Use npm to run the set of tests
+
+```
+> npm test
+```
+
 ## API
 
 Due to the asynchronous nature of Nodejs, this module uses callbacks in requests. All callbacks have 2 arguments: `err` and `data`.
@@ -106,7 +114,7 @@ podio.applicationsGetAllUserApps(options, function (err, result) {
 ```
 
 ### Body
-Many methods require to send a body part of the HTTP Request. For these cases the developer should include a `body` property into the `options` object. Below can see a sample invoking ['Update An Application'](https://developers.podio.com/doc/applications/update-app-22352) method.
+Many methods require to send a body as part of the HTTP Request. For these cases the developer should include a `body` property into the `options` object. Below you can see a sample invoking ['Update An Application'](https://developers.podio.com/doc/applications/update-app-22352) method.
 
 ```
 var options = {
